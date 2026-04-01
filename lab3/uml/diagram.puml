@@ -1,0 +1,298 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty members
+
+class Location {
+    - String id
+    - String name
+    - Coordinates position
+    + boolean enter(List<Human> group)
+    + boolean exit(List<Human> group)
+}
+
+enum Emotion {
+    FEAR
+    JOY
+    CURIOSITY
+    EMPTINESS
+    GRATITUDE
+    DESPAIR
+}
+
+enum HealthStatus {
+    ALIVE
+    WET
+    DRY
+    TIRED
+    INTOXICATED
+}
+
+enum ZoneDangerLevel {
+    SAFE
+    UNPREDICTABLE
+    CRITICAL
+}
+
+enum CharacterType {
+    STALKER
+    NEWBIE
+    LEGENDARY_STALKER
+}
+
+class Coordinates <<record>> {
+    int x
+    int y
+    int z
+}
+
+class TimeSpent <<record>> {
+    int hours
+    int minutes
+}
+
+interface Transportable {
+    + Coordinates move(Coordinates target)
+    + Coordinates getCurrentPosition()
+}
+
+interface Cleanable {
+    + boolean wash(String waterType, int temperature)
+    + boolean irradiate(int duration, int intensity)
+    + boolean dry(int airTemperature)
+}
+
+interface StalkerSkill {
+    + boolean detectAnomaly(Coordinates location, String anomalyType)
+    + Coordinates navigateBlindly(Coordinates startPoint, Coordinates endPoint)
+    + boolean calmDown(Newbie newbie, String method)
+}
+
+class DeadHumanException extends Exception {
+    + String getMessage()
+}
+
+class EmptyResourceException extends Exception {
+    + String getMessage()
+}
+
+abstract class Human {
+    - String name
+    - String nickname
+    - int age
+    - CharacterType type
+    - Emotion currentEmotion
+    - HealthStatus health
+    - String backstory
+    - boolean isAlive
+    + HealthStatus reactToDanger(ZoneDangerLevel level, String dangerSource)
+    + String speak(String phrase, Human listener)
+    + Emotion feel(Emotion newEmotion, String reason)
+    + String toString()
+    + boolean equals(Object o)
+    + int hashCode()
+}
+
+Human <|-- Stalker
+Human <|-- Newbie
+
+class Stalker {
+    - int experienceYears
+    - List<Human> memories
+    - List<Human> currentGroup
+    + List<Newbie> calmDownNewbies(List<Newbie> newbies, boolean useThreats)
+    + String tellStoryAbout(Human character, List<Human> listeners)
+    + boolean remember(String event, Human character)
+    + Zone enterZone(Zone zone, List<Human> group)
+    + Zone exitZone(Zone zone, List<Human> group)
+    + Galosha boardGalosha(Galosha galosha, List<Human> group)
+    + Galosha leaveGalosha(Galosha galosha, List<Human> group)
+    + SanitaryHangar goToSanitaryHangar(SanitaryHangar hangar, List<Human> group)
+}
+
+class Newbie {
+    - boolean isTrained
+    - boolean isShouting
+    + Stalker panic(String reason, Stalker stalker)
+    + List<Human> rejoice(String event, List<Human> group)
+    + String askQuestion(String question, Human target)
+    + Stalker followStalker(Stalker stalker)
+    + Galosha boardGalosha(Galosha galosha)
+}
+
+abstract class Item {
+    - String name
+    - double weight
+    - boolean isBroken
+    + String toString()
+    + Human use(Human user) throws DeadHumanException, EmptyResourceException
+}
+
+Item <|-- Flask
+Item <|-- Cigarette
+Item <|-- Watch
+Item <|-- SpecialSuit
+Item <|-- DummyArtifact
+
+class Flask {
+    - boolean isFull
+    - double volume
+    - boolean hasCap
+    - String liquidType
+    + Flask screwCap(boolean tight)
+    + Flask unscrewCap()
+    + Human use(Human user) throws EmptyResourceException
+    + String getTaste()
+    + Flask emptyFlush()
+    + Flask fill(String liquid, double volume)
+}
+
+class Cigarette {
+    - boolean isLit
+    - double remainingLength
+    - String brand
+    + Cigarette light()
+    + Human use(Human user) throws EmptyResourceException
+    + Cigarette extinguish()
+    + boolean isFinished()
+}
+
+class Watch {
+    - TimeSpent currentTime
+    - String brand
+    + Human use(Human user)
+    + TimeSpent getTimeSpentInZone(TimeSpent entryTime, TimeSpent exitTime)
+    + Watch setTime(TimeSpent newTime)
+}
+
+class SpecialSuit {
+    - boolean isWetInside
+    - boolean isRadiated
+    - String size
+    + SpecialSuit dry(int duration)
+    + SpecialSuit wash(String detergent, int temperature)
+    + Human use(Human user)
+    + SpecialSuit putOn(Human owner)
+    + SpecialSuit takeOff()
+}
+
+class DummyArtifact {
+    - double gravitationalPull
+    - boolean isDangerous
+    - String color
+    + Human use(Human user)
+    + Human emitField(Human affected, int radius)
+}
+
+class ItemFactory {
+    + Item createFlask(double volume, String liquidType)
+    + Item createCigarette(String brand, double length)
+    + Item createWatch(String brand, TimeSpent initialTime)
+    + Item createSpecialSuit(String size)
+    + Item createDummyArtifact(double pull, boolean dangerous, String color)
+}
+
+class Galosha {
+    - Coordinates position
+    - boolean isAutoMode
+    - int speed
+    - List<Human> passengers
+    - CourseGraph courseGraph
+    + Coordinates move(Coordinates target, int speed)
+    + Coordinates goBack(boolean precise)
+    + Galosha stopAndHover(int duration)
+    + Galosha board(List<Human> group)
+    + Galosha disembark(List<Human> group)
+    + Galosha startAutoReturn()
+}
+
+class CourseGraph {
+    - List<Coordinates> route
+    - boolean isCalibrated
+    + CourseGraph recordRoute(Coordinates start, Coordinates end)
+    + Coordinates getNextPoint(Coordinates currentPosition)
+    + Galosha followRoute(Galosha galosha)
+}
+
+Location <|-- Zone
+Location <|-- Cordon
+Location <|-- SanitaryHangar
+
+class Zone {
+    - {static} Zone instance
+    - ZoneDangerLevel dangerLevel
+    - List<Coordinates> anomalies
+    - List<Human> visitors
+    - Zone() {private}
+    + {static} Zone getInstance()
+    + boolean enter(List<Human> group, Coordinates entryPoint)
+    + boolean exit(List<Human> group, Coordinates exitPoint)
+    + double getRadiationLevel(Coordinates position)
+    + HealthStatus affectHuman(Human human)
+}
+
+class Cordon {
+    - boolean isGuarded
+    - int guardsCount
+    + boolean blockPassage(boolean permanent)
+    + boolean checkPass(List<Human> group)
+}
+
+class SanitaryHangar {
+    - int waterTemperature
+    - boolean isIrradiatorOn
+    - int capacity
+    - List<Human> processedHumans
+    - List<Transportable> processedVehicles
+    + Transportable washVehicle(Transportable vehicle, String washProgram)
+    + Cleanable decontaminate(Cleanable object, int cycles)
+    + List<Human> processHuman(List<Human> group, boolean force)
+}
+
+class App {
+    +{static} void main(String[] args)
+}
+
+App --> ItemFactory
+App --> Human
+App --> Location
+
+CourseGraph --> Coordinates
+
+DeadHumanException --|> Exception
+EmptyResourceException --|> Exception
+
+Galosha <|.. Transportable
+Galosha *-- CourseGraph
+Galosha --> Human
+
+Human <|.. Cleanable
+Human --> CharacterType
+Human --> Emotion
+Human --> HealthStatus
+
+Item --> DeadHumanException
+Item --> EmptyResourceException
+
+ItemFactory --> Item
+
+Item <|-- Flask
+Item <|-- Cigarette
+Item <|-- Watch
+Item <|-- SpecialSuit
+Item <|-- DummyArtifact
+
+SanitaryHangar <|-- Location
+SanitaryHangar --> Human
+SanitaryHangar --> Transportable
+
+SpecialSuit <|.. Cleanable
+
+Stalker <|-- Human
+Stalker <|.. StalkerSkill
+Stalker --> Human
+Stalker --> TimeSpent
+
+Zone <|-- Location
+Zone --> ZoneDangerLevel
+
+@enduml
