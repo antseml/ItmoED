@@ -1,0 +1,244 @@
+код:
+ЗАДАНИЕ 1
+
+mkdir lab0
+cd lab0
+
+mkdir aipom5
+touch blitzle0
+mkdir chimchar1
+touch darumaka2
+mkdir emboar1
+touch kakuna9
+
+cd aipom5
+
+mkdir kadabra
+touch pelipper
+touch voltorb
+mkdir garchomp
+touch nidorina
+touch ariados
+
+cat > pelipper
+Живет Beach
+cat > voltorb
+Тип диеты  Ergovore
+cat > nidorina
+Тип
+диеты Herbivore
+cat > ariados
+weight=73.9 height=43.0 atk=9
+def=7
+
+cd ..
+cd chimchar1/
+
+mkdir eelektross
+mkdir kabutops
+touch hydreigon
+touch swablu
+
+cat > hydreigon
+Живет
+Cave Mountain
+cat > swablu
+Тип диеты Herbivore
+
+cd ..
+
+cat > blitzle0
+Развитые способности Sap Sipper
+cat > darumaka2
+Развитые
+способности Prankster
+cat > kakuna9
+Тип диеты Nullivore
+
+cd emboar1/
+
+mkdir vigoroth
+touch pansear
+touch granbull
+
+cat > pansear
+satk=5 sdef=5 spd=6
+cat > granbull
+Развитые
+способности Rattled
+
+cd ..
+
+
+
+
+ЗАДАНИЕ 2
+chmod 567 aipom5
+chmod 771 aipom5/kadabra
+chmod u=r,go= aipom5/pelipper
+chmod u=rw,g=r,o= aipom5/voltorb
+chmod 513 aipom5/garchomp
+chmod ug=r,o= aipom5/nidorina
+chmod 400 aipom5/ariados
+chmod 444 blitzle0
+chmod 770 chimchar1
+chmod 771 chimchar1/eelektross
+chmod 567 chimchar1/kabutops
+chmod 046 chimchar1/hydreigon
+chmod 620 chimchar1/swablu
+chmod 400 darumaka2
+chmod 764 emboar1
+chmod u=r,g=,o=r emboar1/pansear
+chmod 567 emboar1/vigoroth
+chmod u=r,g=r,o=r emboar1/granbull
+chmod 640 kakuna9
+
+
+
+
+ЗАДАНИЕ 3
+пункт 1
+cp -r aipom5 aipom5/kadabra
+ls -Rl aipom5/kadabra/
+total 9
+dr-xr--r-x  4 s501219 studs 8 21 нояб. 14:50 aipom5
+
+aipom5/kadabra/aipom5:
+total 3
+-r--------  1 s501219 studs 36 21 нояб. 14:50 ariados
+dr-x--x--x  2 s501219 studs  2 21 нояб. 14:50 garchomp
+drwxr-x--x  2 s501219 studs  2 21 нояб. 14:50 kadabra
+-r--r-----  1 s501219 studs 28 21 нояб. 14:50 nidorina
+-r--------  1 s501219 studs 17 21 нояб. 14:50 pelipper
+-rw-r-----  1 s501219 studs 28 21 нояб. 14:50 voltorb
+
+aipom5/kadabra/aipom5/garchomp:
+total 0
+
+aipom5/kadabra/aipom5/kadabra:
+total 0
+
+пункт 2
+ln kakuna9 chimchar1/hydreigonkakuna
+ls -li kakuna9 chimchar1/hydreigonkakuna
+22310684 -rw-r-----  2 s501219 studs 28 20 нояб. 19:44 chimchar1/hydreigonkakuna
+22310684 -rw-r-----  2 s501219 studs 28 20 нояб. 19:44 kakuna9
+
+Пункт 3
+ln -s aipom5 Copy_66
+ls -la Copy_66
+lrwxr-xr-x  1 s501219 studs 6 20 нояб. 19:57 Copy_66 -> aipom5
+
+Пункт 4
+cp kakuna9 aipom5/kadabra
+ls aipom5/kadabra/kakuna9
+aipom5/kadabra/kakuna9
+
+Пункт 5
+cat blitzle0 > emboar1/pansearblitzle
+cat emboar1/pansearblitzle
+Развитые способности Sap Sipper
+cat blitzle0
+Развитые способности Sap Sipper
+
+Пункт 6
+cat emboar1/granbull emboar1/pansear > blitzle0_99
+cat blitzle0_99
+Развитые
+способности Rattled
+satk=5 sdef=5 spd=6
+cat emboar1/granbull
+Развитые
+способности Rattled
+cat emboar1/pansear
+satk=5 sdef=5 spd=6
+
+Пункт 7
+chmod 777 aipom5/
+ln -s ../kakuna9 aipom5/nidorinakakuna
+ls -la aipom5/nidorinakakuna
+lrwxr-xr-x  1 s501219 studs 10 20 нояб. 20:00 aipom5/nidorinakakuna -> ../kakuna9
+chmod 573 aipom5
+
+
+
+
+ЗАДАНИЕ 4
+cat *p */p* */*/*p */*/*/p* 2>&1 | grep -v "^cat:" | wc -l > /tmp/res1.txt
+cat /tmp/res1.txt
+       6
+
+Пункт 2
+LC_ALL=C ls -lRA . 2>/tmp/errors | grep -v '^total' | grep -v '^$' | grep -v ':$' | LC_ALL=C sort -k6,6M -k7,7n -k8,8 | head -4
+----r--rw-  1 s501219 studs 25 Nov 21 15:02 hydreigon
+-r--------  1 s501219 studs 17 Nov 21 15:02 pelipper
+-r--------  1 s501219 studs 36 Nov 21 15:02 ariados
+-r--------  1 s501219 studs 50 Nov 21 15:02 darumaka2
+
+Пункт 3
+cat -n *s */*s */*/*s */*/*/*s 2>&1 | sort -r
+cat: chimchar1/kabutops: Is a directory
+cat: chimchar1/eelektross: Is a directory
+cat: *s: No such file or directory
+cat: */*/*s: No such file or directory
+     2  def=7
+     2  def=7
+     2  def=7
+     2  def=7
+     1  weight=73.9 height=43.0 atk=9
+     1  weight=73.9 height=43.0 atk=9
+     1  weight=73.9 height=43.0 atk=9
+     1  weight=73.9 height=43.0 atk=9
+
+Пункт 4
+cat *r */*r */*/*r */*/*/*r 2>/tmp/err4.txt | wc -l > /tmp/res4.txt
+cat /tmp/res4.txt
+       5
+
+Пункт 5
+ls -lRA aipom5 | grep -v '^total' | grep -v '^$' | grep -v ':$' | sort -k2,2nr
+dr-xr--r-x  4 s501219 studs  8 21 нояб. 15:12 aipom5
+drwxrwx--x  3 s501219 studs  4 21 нояб. 15:12 kadabra
+dr-x--x--x  2 s501219 studs  2 21 нояб. 15:12 garchomp
+dr-x--x-wx  2 s501219 studs  2 21 нояб. 15:02 garchomp
+drwxr-x--x  2 s501219 studs  2 21 нояб. 15:12 kadabra
+-r--------  1 s501219 studs 17 21 нояб. 15:02 pelipper
+-r--------  1 s501219 studs 17 21 нояб. 15:12 pelipper
+-r--------  1 s501219 studs 36 21 нояб. 15:02 ariados
+-r--------  1 s501219 studs 36 21 нояб. 15:12 ariados
+-r--r-----  1 s501219 studs 28 21 нояб. 15:02 nidorina
+-r--r-----  1 s501219 studs 28 21 нояб. 15:12 nidorina
+-rw-r-----  1 s501219 studs 28 21 нояб. 15:02 voltorb
+-rw-r-----  1 s501219 studs 28 21 нояб. 15:12 kakuna9
+-rw-r-----  1 s501219 studs 28 21 нояб. 15:12 voltorb
+lrwxr-xr-x  1 s501219 studs 10 21 нояб. 15:12 nidorinakakuna -> ../kakuna9
+
+Пункт 6
+LC_ALL=C ls -lR . 2>&1 | grep -v '^total' | grep -v '^$' | grep -v ':$' | grep '^[^ ]*.*[ ]e[^ ]*$' | LC_ALL=C sort -k6,6Mr -k7,7nr -k8,8r | tail -2
+drwxrw-r--  3 s501219 studs   6 Nov 21 15:12 emboar1
+drwxrwx--x  2 s501219 studs  2 Nov 21 15:02 eelektross
+
+
+
+
+ЗАДАНИЕ 5
+Пункт 1
+rm darumaka2
+
+Пункт 2
+rm chimchar1/swablu
+
+Пункт 3
+rm Copy_*
+
+Пункт 4
+rm chimchar1/hydreigonkaku*
+
+Пункт 5
+chmod -R 777 chimchar1/
+rm chimchar1/
+
+Пункт 6
+chmod 777 aipom5/
+rm -r aipom5/garchomp
+chmod 573 aipom5
