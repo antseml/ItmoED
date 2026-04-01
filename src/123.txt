@@ -1,0 +1,5 @@
+jar cfe LAB2P.jar Main -C bin .
+cd temp
+jar xf ..\LAB2P.jar
+jar xf ..\lib\Pokemon.jar
+jar cfe ../LAB2P.jar Main *
